@@ -18,13 +18,15 @@ const insertInitialUserData = async () => {
 
     // Datos de las categorías que deseas insertar
     const categoriesDatos = [
-      { name: "senderismo" },
-      { name: "alpinismo" },
-      { name: "esqui" },
-      { name: "snowboard" },
-      { name: "barranquismo" },
-      { name: "rafting" },
-      { name: "kayak " },
+      { name: "Senderismo" },
+      { name: "Alpinismo" },
+      { name: "Escalada" },
+      { name: "Esqui" },
+      { name: "Snowboard" },
+      { name: "Barranquismo" },
+      { name: "Rafting" },
+      { name: "Kayak " },
+      { name: "Otros " },
     ];
 
     // Insertar las categorías solo si no existen
