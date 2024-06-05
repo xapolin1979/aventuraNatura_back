@@ -22,6 +22,7 @@ export const authenticateToken = (allowedRoles) => async (req, res, next) => {
         message: 'Token de acceso no válido'
       });
     }
+   
      req.user = user;
     next();
   } catch (error) {

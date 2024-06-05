@@ -82,3 +82,37 @@ export const uploadPhoto = async (req, res) => {
     }
   };
   
+
+  
+  export const getEventPhotos = async (req, res) => {
+    try {
+      // Obtener el id del evento desde los parámetros de la URL
+      const eventId = req.params.id;
+  
+      // Verificar si el usuario está autenticado
+      if (!req.user) {
+        return res.status(401).json({
+          code: -1,
+          message: "Debes iniciar sesión para ver las fotos",
+        });
+      }
+  
+      // Buscar las fotos asociadas al evento específico
+      const photos = await Photos.findAll({
+        where: { event_id: eventId },
+      });
+  
+      // Devolver las fotos encontradas en la respuesta
+      res.status(200).json({
+        code: 1,
+        message: "Lista de fotos del evento",
+        data: photos,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        code: -100,
+        message: "Ha ocurrido un error al obtener las fotos del evento",
+      });
+    }
+  };
