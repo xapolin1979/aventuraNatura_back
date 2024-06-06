@@ -4,6 +4,9 @@ import Category from "../models/categoryModel.js";
 import User from "../models/userModel.js";
 import Photos from "../models/photosModel.js";
 import Participants from "../models/participantsNodel.js";
+import fs from 'fs';
+import path from 'path';
+
 export const getEvents = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -209,43 +212,54 @@ export const deleteEvent = async (req, res) => {
     const { id } = req.params;
     const userId = req.user.id_user;
 
-// Buscar el evento por su ID en la base de datos
+    // Buscar el evento por su ID en la base de datos
     const event = await Event.findByPk(id);
 
-// Verificar si el evento existe
- if (!event) {
-  return res.status(404).json({
-    code: -100,
-    message: "Evento no encontrado",
-  });
-}
-
-// Verificar si el usuario autenticado es el propietario del evento
-if (event.user_id !== userId) {
-  return res.status(403).json({
-    code: -101,
-    message: "No tienes permiso para eliminar este evento",
-  });
-}
-
-
-
-
-    // Buscar un libro por su ID en la base de datos y eliminarlo
-    const deleteEvent = await Event.destroy({ where: { id_event: id } });
-
-    // Verificar si el libro fue encontrado y eliminado
-    if (!deleteEvent) {
+    // Verificar si el evento existe
+    if (!event) {
       return res.status(404).json({
         code: -100,
-        message: "Event Not Found",
+        message: "Evento no encontrado",
       });
     }
+
+    // Verificar si el usuario autenticado es el propietario del evento
+    if (event.user_id !== userId) {
+      return res.status(403).json({
+        code: -101,
+        message: "No tienes permiso para eliminar este evento",
+      });
+    }
+
+    // Obtener las fotos asociadas al evento
+    const photos = await Photos.findAll({
+      where: { event_id: id }
+    });
+
+    // Eliminar las fotos de la base de datos
+    await Photos.destroy({
+      where: { event_id: id }
+    });
+
+    // Eliminar las fotos del sistema de archivos
+    photos.forEach(async (photo) => {
+      const filePath = path.join('./src/uploads/', photo.photo);
+      try {
+        await fs.promises.unlink(filePath);
+        console.log('Foto eliminada del sistema de archivos:', filePath);
+      } catch (err) {
+        console.error('Error al eliminar la foto del sistema de archivos:', err);
+        // Si hay un error al eliminar el archivo, no devolver un error aquí para no interrumpir el proceso de eliminación
+      }
+    });
+
+    // Eliminar el evento de la base de datos
+    await Event.destroy({ where: { id_event: id } });
 
     // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
-      message: "Event Deleted Successfully",
+      message: "Evento eliminado correctamente",
     });
   } catch (error) {
     console.error(error);
