@@ -40,12 +40,12 @@ const Event = sequelize.define(
     },
 
     lat:{
-      type: DataTypes.DECIMAL(11,7),
+      type: DataTypes.DECIMAL(11,8),
       allowNull: false,
 
     },
     lng:{
-      type: DataTypes.DECIMAL(11,7),
+      type: DataTypes.DECIMAL(11,8),
       allowNull: false,
     },
     info_event: {
