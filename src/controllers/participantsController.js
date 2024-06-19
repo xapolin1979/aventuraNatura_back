@@ -1,5 +1,41 @@
+import { ConnectionAcquireTimeoutError } from "sequelize";
 import Event from "../models/eventModel.js";
 import Participants from "../models/participantsNodel.js";
+export const getParticipantsByEventId = async (req, res) => {
+  try {
+    const { event_id } = req.params;
+
+    // Verifica si el event_id existe en la base de datos
+    const existingEvent = await Event.findByPk(event_id);
+    if (!existingEvent) {
+      return res.status(400).json({
+        code: -1,
+        message: "El evento con el ID proporcionado no existe",
+      });
+    }
+
+    // Busca los participantes con el mismo event_id
+    const participants = await Participants.findAll({
+      where: {
+        event_id: event_id,
+      },
+    });
+
+    // Enviar una respuesta al cliente
+    res.status(200).json({
+      code: 1,
+      message: `Participantes del evento con ID ${event_id}`,
+      data: participants,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      code: -100,
+      message: "Ha ocurrido un error al obtener los participantes del evento",
+    });
+  }
+};
+
 
 
  export const addParticipants = async (req, res) => {
