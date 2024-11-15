@@ -32,11 +32,18 @@ export const getEventGeneral = async (req, res) => {
 
 export const getEventGeneralById = async (req, res) => {
   try {
-   
-    const { id } = req.params;
+    const eventId = parseInt(req.params.id); // Convertir el ID a un número entero
 
-    const event = await Event.findOne({
-      where: { id: id },
+    if (isNaN(eventId)) {
+      // Si el ID no es un número válido, enviar una respuesta 400 (Solicitud incorrecta)
+      return res.status(400).json({
+        code: -1,
+        message: "El ID del evento proporcionado no es válido",
+      });
+    }
+
+    // Buscar el evento por su ID e incluir las relaciones Category, User y Photos
+    const event = await Event.findByPk(eventId, {
       include: [
         { model: Category, attributes: ['name'] },
         { model: User, attributes: ['name'] },
@@ -45,20 +52,22 @@ export const getEventGeneralById = async (req, res) => {
     });
 
     if (!event) {
+      // Si no se encuentra el evento, enviar una respuesta 404 (No encontrado)
       return res.status(404).json({
         code: -6,
         message: "Evento no encontrado",
       });
     }
 
-    // Enviar una respuesta al cliente
+    // Enviar una respuesta con el detalle del evento encontrado
     res.status(200).json({
       code: 1,
-      message: "Event Detail",
-      data:event,
+      message: "Detalle del evento",
+      data: event,
     });
   } catch (error) {
     console.error(error);
+    // En caso de error, enviar una respuesta 500 (Error interno del servidor)
     res.status(500).json({
       code: -100,
       message: "Ha ocurrido un error al obtener el evento",
