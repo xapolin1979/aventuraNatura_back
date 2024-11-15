@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-/* const sequelize = new Sequelize(
+const sequelize = new Sequelize(
   process.env.DATABASE,
   process.env.USER_NAME,
   process.env.PASSWORD,
@@ -11,13 +11,8 @@ dotenv.config();
     host: process.env.HOST_NAME,
     dialect: 'mysql'
   }
-); */
-const sequelize = new Sequelize(process.env.MYSQL_URL, {
-  dialect: 'mysql',
-  dialectOptions: {
-    // Configuración adicional si es necesaria
-  }
-});
+);
+
 const syncroModel = async () => {
   try {
     // Sincronizar el modelo con la base de datos (crear la tabla si no existe)
