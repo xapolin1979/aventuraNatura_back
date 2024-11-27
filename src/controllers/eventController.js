@@ -132,6 +132,7 @@ export const addEvent = async (req, res) => {
     res.status(500).json({
       code: -100,
       message: "Ha ocurrido un error al añadir el evento",
+      error: error.message,
     });
   }
 };

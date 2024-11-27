@@ -61,7 +61,7 @@ const Event = sequelize.define(
       allowNull: false,
     },
     material: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(300),
       allowNull: false,
     },
   },
