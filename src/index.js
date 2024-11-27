@@ -15,7 +15,7 @@ import { insertInitialUserData } from "./start_data.js";
 import path from 'path'
 import {fileURLToPath} from 'url';
 dotenv.config();
-
+console.log(process.env)
 const app = express();
 
 // Configura el middleware CORS para que peuda recibir solicitudes de POST, PUT, DELETE, UPDATE, etc.
