@@ -19,14 +19,10 @@ dotenv.config();
 const app = express();
 
 // Configura el middleware CORS para que peuda recibir solicitudes de POST, PUT, DELETE, UPDATE, etc.
-const allowedOrigins = process.env.NODE_ENV === "production"
-  ? ["https://aventuranatura-back.onrender.com"]
-  : ["http://localhost:4200"];
-
 app.use(
   cors({
     credentials: true,
-    origin: allowedOrigins,
+    origin: "http://localhost:4200",
   })
 );
 
