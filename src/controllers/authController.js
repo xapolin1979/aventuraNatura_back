@@ -59,6 +59,7 @@ export const register = async (req, res) => {
       error: error,
     });
   }
+  
 };
 
 export const login = async (req, res) => {
