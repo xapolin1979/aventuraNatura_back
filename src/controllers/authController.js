@@ -273,7 +273,7 @@ export const logout = async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'None',
-    maxAge: -1,
+    maxAge: 0,
     path: '/',
   });
   res.setHeader('Set-Cookie', token);
