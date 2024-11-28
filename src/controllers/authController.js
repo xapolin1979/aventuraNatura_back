@@ -268,12 +268,12 @@ export const logout = async (req, res) => {
 
   const { cookies } = req;
   const jwt = cookies.token;
-  try {
+
   const token = serialize('token', null, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'None',
-    maxAge: 0,
+    maxAge: -1,
     path: '/',
   });
   res.setHeader('Set-Cookie', token);
@@ -281,12 +281,4 @@ export const logout = async (req, res) => {
     code: 0,
     message: 'Logged out - Delete Token',
   });
-} catch (error) {
-  console.error(error);
-  res.status(500).json({
-    code: -100,
-    message: 'Error al intentar eliminar el token',
-    error: error,
-  });
-}
 }
