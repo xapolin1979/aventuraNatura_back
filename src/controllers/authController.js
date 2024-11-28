@@ -271,7 +271,7 @@ export const logout = async (req, res) => {
 
   const token = serialize('token', null, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: 'false',
     sameSite: 'strict',
     maxAge: -1,
     path: '/',
