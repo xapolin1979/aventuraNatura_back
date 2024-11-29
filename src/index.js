@@ -22,7 +22,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://www.aventuranatura.es.mialias.net",
+    origin: "https://aventuranatura-8e6f8.firebaseapp.com/",
   })
 );
 
