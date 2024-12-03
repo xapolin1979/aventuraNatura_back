@@ -269,13 +269,13 @@ export const logout = async (req, res) => {
   const { cookies } = req;
   const jwt = cookies.token;
 
-  const token = serialize('token', null, {
+  const token =res.setHeader('Set-Cookie', serialize('token', null, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: -1,
     path: '/',
-  });
+  }));
   res.setHeader('Set-Cookie', token);
   res.status(200).json({
     code: 0,
