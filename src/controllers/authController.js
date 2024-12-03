@@ -94,7 +94,7 @@ export const login = async (req, res) => {
     const accessToken = jwt.sign({ id_user: user.id_user, name: user.name }, process.env.JWT_SECRET);
     const token = serialize('token', accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: 'true',
       sameSite: 'none',
       maxAge: 60 * 60 * 24 * 30,
       path: '/',
@@ -271,8 +271,8 @@ export const logout = async (req, res) => {
 
   const token = serialize('token', null, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: true,
+    sameSite: 'none',
     maxAge: -1,
     path: '/',
   });
